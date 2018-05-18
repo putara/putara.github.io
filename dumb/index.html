@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DumbScript Interpreter</title>
+<style>
+#code {
+  box-sizing: border-box;
+  width: 100%;
+}
+.group {
+  display: flex;
+}
+#func, #param {
+  flex: 1;
+}
+#ret {
+  flex: 4;
+}
+#error {
+  flex: 3;
+}
+</style>
+</head>
+<body>
+<form id="test">
+<textarea id="code" rows="15">var main = function(arg){
+ var kia = {
+  ora: function(name){
+   var array = name.split("");
+   var formatted = array.join("-");
+   var one3 = name.length * 3;
+   return "Kia ora, is your name " + formatted + "? It's " + name.length + " letters long, one third of " + one3 + ".";
+  }
+ };
+ return kia.ora(arg);
+}
+</textarea>
+<div class="group">
+<input id="func" placeholder="function" value="main">
+<input id="param" placeholder="parameter" value="nobody">
+<input id="ret" placeholder="return" readonly>
+<input id="error" placeholder="error" readonly>
+</div>
+<button id="run">Run!</button>
+</form>
+<script>
+window.addEventListener('load', () => {
+  let $ = (q) => document.querySelector(q);
+  let js = new JSVM();
+  $('#test').addEventListener('submit', (e) => {
+    try {
+      let code = $('#code').value;
+      let func = $('#func').value;
+      let arg = $('#param').value;
+      js.clear();
+      js.append(code);
+      let ret = js.eval(func, arg);
+      $('#ret').value = ret;
+      $('#error').value = null;
+    } catch (e) {
+      console.error(e);
+      if (e instanceof RuntimeException) {
+        $('#error').value = e.message;
+      }
+    }
+    e.preventDefault();
+  });
+});
+</script>
+<script src="dumb.js" async></script>
+</body>
+</html>
