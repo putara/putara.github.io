@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Demo</title>
+<link rel="stylesheet" type="text/css" href="wm.min.css">
+<link rel="stylesheet" type="text/css" href="site.css">
+<style>
+template { display: none } /* hide <template> on IE */
+strong { font-weight: 900 }
+</style>
+</head>
+<body>
+<script src="wm.min.js" async></script>
+<script src="site.js" async></script>
+
+<template id="dlg1" class="tpl-dlg" data-title="Memo">
+  <div class="wm-lbl">Do you <strong>really</strong> want to save changes?</div>
+  <label><input type="checkbox">Don't ask me again</label>
+  <div class="wm-footer">
+    <button class="wm-ok">Sure!</button>
+    <button class="wm-cancel">Nope</button>
+  </div>
+</template>
+
+<template id="dlg2" class="tpl-dlg" data-title="Learn Foreign Languages">
+  <div class="wm-tabs">
+    <ul class="wm-tab">
+      <li>Greetings</li>
+      <li>Business</li>
+      <li>Foods</li>
+      <li>Insults</li>
+    </ul>
+    <ul class="wm-tabpage">
+      <li>
+        <label>
+          <input type="text" value="Hello">
+        </label>
+        <div class="wm-flex-expand">
+          <button style="width:5em">Speak</button>
+          <button style="width:6em">Words&hellip;</button>
+          <button style="width:8em">Languages&hellip;</button>
+        </div>
+        <label>
+          <textarea rows="5">Kia ora (Māori)
+مرحبا (Arabic)
+Здравствуйте (Russian)
+こんにちは (Japanese)</textarea>
+        </label>
+        </li>
+      <li>
+        <label>
+          <input type="text" value="Woo">
+        </label>
+        <div class="wm-flex-expand">
+          <button style="width:5em">Nah</button>
+        </div>
+        <label>
+          <textarea rows="5"></textarea>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="text" value="Baa">
+        </label>
+        <div class="wm-flex-expand">
+          <button style="width:5em">Huh?</button>
+        </div>
+        <label>
+          <textarea rows="5"></textarea>
+        </label>
+      </li>
+      <li>
+        <label>
+          <input type="text" value="Ooh">
+        </label>
+        <div class="wm-flex-expand">
+          <button style="width:5em">Wow!</button>
+        </div>
+        <label>
+          <textarea rows="5"></textarea>
+        </label>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<template id="dlg3" class="tpl-dlg" data-title="Print">
+  <div class="wm-lbl">Preparing the document&hellip;</div>
+  <progress value="40" max="100"></progress>
+  <div class="wm-footer">
+    <button class="wm-btn wm-cancel">Stop</button>
+  </div>
+</template>
+
+<template id="dlg4" class="tpl-dlg" data-title="Configuration">
+  <fieldset>
+    <legend>Appearance</legend>
+    <label class="wm-ml">Theme<select id="prefs-theme"><option value="98">Windows 98</option><option value="7" selected>Windows 7</option><option value="10">Windows 10</option></select>
+    </label>
+  </fieldset>
+  <div class="wm-footer">
+    <button class="wm-btn wm-ok">Done</button>
+  </div>
+</template>
+
+<header>
+  <h1>Demo</h1>
+</header>
+<main aria-role="main">
+  <aside>
+    <nav>
+      <h2>Group 1</h2>
+      <ul>
+        <li><a href="#">Menu 1</a></li>
+        <li><a href="#">Menu 2</a></li>
+        <li><a href="#">Menu 3</a></li>
+        <li><a href="#">Menu 4</a></li>
+      </ul>
+    </nav>
+    <nav>
+      <h2>Group 2</h2>
+      <ul>
+        <li><a href="#">Menu 5</a></li>
+        <li><a href="#">Menu 6</a></li>
+        <li><a href="#">Menu 7</a></li>
+      </ul>
+    </nav>
+    <nav>
+      <h2>Group 3</h2>
+      <ul>
+        <li><a href="#">Menu 8</a></li>
+        <li><a href="#">Menu 9</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <section>
+    <h1>How Do You Do?</h1>
+    <p>Sit placeat laudantium placeat explicabo. Provident tempore molestiae accusamus. Adipisci nisi saepe aperiam voluptas ut rerum impedit. Voluptatem aperiam aliquid exercitationem.</p>
+    <p>Est deserunt tenetur adipisci ut aperiam dolore ducimus maxime dolorem. Cupiditate exercitationem qui pariatur. Et impedit beatae natus repudiandae iusto incidunt officiis.</p>
+    <p>Architecto minima eos consequatur aliquid. Excepturi nostrum est est minima porro. Magni optio ad quaerat nisi. Cum eius neque quibusdam amet totam quis sunt.</p>
+    <p>Qui sit aspernatur voluptatem sequi. Et ex qui eos et a dolorum quod. Neque ipsa dignissimos voluptas. Repellendus sapiente qui.</p>
+    <p>Molestiae rem qui accusamus fuga non fugit sit vel ut. Asperiores nulla voluptates et eos voluptas velit. Accusamus et sequi. Id molestias voluptatem quidem architecto nostrum quos qui. Et id magnam facilis et optio perferendis aut doloribus. Sit totam illum et blanditiis illo quis vero quia qui.</p>
+    <p>Possimus sed tempora. Id consequatur repellendus sed minus et quidem reprehenderit qui nesciunt. Quo dolorem dolorem eius nesciunt ducimus autem ullam. Dolor animi at. Quis sit est voluptatem quo perspiciatis voluptatem debitis.</p>
+    <p>Aliquam deleniti et fugiat sequi eos impedit fuga necessitatibus. Sed consequuntur maiores unde dignissimos. Nesciunt odit autem. Tempora eveniet est in quisquam nulla reiciendis dolorem. Quia illo odit et deserunt. Perferendis libero excepturi qui tempora.</p>
+    <p>Deleniti quas sunt illum sit tenetur rerum est. Natus maxime omnis. Laborum voluptas impedit ea in. Qui earum exercitationem et deleniti et quibusdam eum. At nemo ex. Molestiae quo sapiente eaque dolorem voluptatem delectus fugit incidunt consequatur.</p>
+    <p>Aliquam adipisci qui ea. Modi consequatur pariatur repudiandae sint. Consequatur adipisci nulla omnis eos. A vitae quod commodi esse quaerat. Ea sequi laudantium inventore. Ratione consequatur laborum expedita rem iusto non unde qui.</p>
+    <p>Eveniet ipsa deleniti et. Ipsam omnis tempora cum voluptatem est odio. Autem veniam fuga beatae aut et optio. Autem excepturi vero cupiditate quaerat sapiente est earum quasi saepe. Veniam nihil quisquam. A aspernatur repellendus quae.</p>
+    <p>Corporis rerum eveniet enim quo aut. Unde voluptatibus quisquam enim libero dicta officia commodi. Sint deleniti sed. Qui et recusandae dolorem exercitationem earum. Rem ea doloremque qui qui alias nostrum fuga.</p>
+    <p>Eaque est doloribus. Assumenda neque facilis nihil rerum aspernatur in. Illum eveniet maiores. Odio est corrupti reprehenderit amet voluptatibus eos quas.</p>
+  </section>
+</main>
+<footer>
+  Copyright &copy; 2017.
+</footer>
+
+</body>
+</html>
