@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
 <title>Demo</title>
-<link rel="stylesheet" type="text/css" href="wm.min.css">
-<link rel="stylesheet" type="text/css" href="site.css">
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="./dist/css/wm.min.css">
+<link rel="stylesheet" type="text/css" href="./site.css">
 <style>
 template { display: none } /* hide <template> on IE */
 strong { font-weight: 900 }
 </style>
 </head>
 <body>
-<script src="wm.min.js" async></script>
-<script src="site.js" async></script>
+<script src="./dist/js/wm.min.js" async></script>
+<script src="./site.js" async></script>
 
 <template id="dlg1" class="tpl-dlg" data-title="Memo">
   <div class="wm-lbl">Do you <strong>really</strong> want to save changes?</div>
@@ -41,10 +42,10 @@ strong { font-weight: 900 }
           <button style="width:8em">Languages&hellip;</button>
         </div>
         <label>
-          <textarea rows="5">Kia ora (Māori)
-مرحبا (Arabic)
-Здравствуйте (Russian)
-こんにちは (Japanese)</textarea>
+          <textarea rows="5">Kia ora (M&#257;ori)
+&#1605;&#1585;&#1581;&#1576;&#1575; (Arabic)
+&#1047;&#1076;&#1088;&#1072;&#1074;&#1089;&#1090;&#1074;&#1091;&#1081;&#1090;&#1077; (Russian)
+&#12371;&#12435;&#12395;&#12385;&#12399; (Japanese)</textarea>
         </label>
         </li>
       <li>
@@ -97,6 +98,14 @@ strong { font-weight: 900 }
     <legend>Appearance</legend>
     <label class="wm-ml">Theme<select id="prefs-theme"><option value="98">Windows 98</option><option value="7" selected>Windows 7</option><option value="10">Windows 10</option></select>
     </label>
+  </fieldset>
+  <fieldset>
+    <legend>Notifications</legend>
+    <div class="wm-flex">
+      <label style="width:5em"><input type="radio" name="rad1" checked>On</label>
+      <label style="width:5em"><input type="radio" name="rad1">Off</label>
+      <label><input type="radio" name="rad1">Whatever</label>
+    </div>
   </fieldset>
   <div class="wm-footer">
     <button class="wm-btn wm-ok">Done</button>
