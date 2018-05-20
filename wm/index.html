@@ -42,7 +42,7 @@ strong { font-weight: 900 }
           <button style="width:8em">Languages&hellip;</button>
         </div>
         <label>
-          <textarea rows="5">Kia ora (M&#257;ori)
+          <textarea rows="5" readonly>Kia ora (M&#257;ori)
 &#1605;&#1585;&#1581;&#1576;&#1575; (Arabic)
 &#1047;&#1076;&#1088;&#1072;&#1074;&#1089;&#1090;&#1074;&#1091;&#1081;&#1090;&#1077; (Russian)
 &#12371;&#12435;&#12395;&#12385;&#12399; (Japanese)</textarea>
@@ -102,9 +102,9 @@ strong { font-weight: 900 }
   <fieldset>
     <legend>Notifications</legend>
     <div class="wm-flex">
-      <label style="width:5em"><input type="radio" name="rad1" checked>On</label>
-      <label style="width:5em"><input type="radio" name="rad1">Off</label>
-      <label><input type="radio" name="rad1">Whatever</label>
+      <label class="wm-nosel" style="width:5em"><input type="radio" name="rad1" checked>On</label>
+      <label class="wm-nosel" style="width:5em"><input type="radio" name="rad1">Off</label>
+      <label class="wm-nosel"><input type="radio" name="rad1">Whatever</label>
     </div>
   </fieldset>
   <div class="wm-footer">
