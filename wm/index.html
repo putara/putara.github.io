@@ -8,22 +8,46 @@
 <style>
 template { display: none } /* hide <template> on IE */
 strong { font-weight: 900 }
+@keyframes fade { from { opacity: 1 } to { opacity: 0 } }
+.blinking { animation: fade ease-in .5s infinite }
 </style>
 </head>
 <body>
 <script src="./dist/js/wm.min.js" async></script>
 <script src="./site.js" async></script>
 
-<template id="dlg1" class="tpl-dlg" data-title="Memo">
+<template id="demo" class="tpl-dlg" data-title="Demo">
+  <fieldset>
+    <legend>Display</legend>
+    <label class="wm-nosel wm-blk"><input type="checkbox" class="disp" id="d-alert">Alert</label>
+    <label class="wm-nosel wm-blk"><input type="checkbox" class="disp" id="d-confirm">Confirm</label>
+    <label class="wm-nosel wm-blk"><input type="checkbox" class="disp" id="d-chkrad">Check &amp; radio</label>
+    <label class="wm-nosel wm-blk"><input type="checkbox" class="disp" id="d-prog">Progress bar</label>
+    <label class="wm-nosel wm-blk"><input type="checkbox" class="disp" id="d-tabs">Tabs</label>
+  </fieldset>
+  <fieldset>
+    <legend>Appearance</legend>
+    <label class="wm-ml">Theme<select id="prefs-theme"><option value="98">Windows 98</option><option value="xp">Windows XP</option><option value="7" selected>Windows 7</option><option value="10">Windows 10</option></select>
+    </label>
+  </fieldset>
+</template>
+
+<template id="alert" class="tpl-dlg" data-title="MailMan">
+  <div class="wm-lbl">You've got mail.</div>
+  <div class="wm-footer">
+    <button class="wm-ok">OK</button>
+  </div>
+</template>
+
+<template id="confirm" class="tpl-dlg" data-title="MemoPad">
   <div class="wm-lbl">Do you <strong>really</strong> want to save changes?</div>
-  <label><input type="checkbox">Don't ask me again</label>
   <div class="wm-footer">
     <button class="wm-ok">Sure!</button>
     <button class="wm-cancel">Nope</button>
   </div>
 </template>
 
-<template id="dlg2" class="tpl-dlg" data-title="Learn Foreign Languages">
+<template id="tabs" class="tpl-dlg" data-title="Learn Foreign Languages">
   <div class="wm-tabs">
     <ul class="wm-tab">
       <li>Greetings</li>
@@ -85,30 +109,27 @@ strong { font-weight: 900 }
   </div>
 </template>
 
-<template id="dlg3" class="tpl-dlg" data-title="Print">
-  <div class="wm-lbl">Preparing the document&hellip;</div>
-  <progress value="40" max="100"></progress>
-  <div class="wm-footer">
-    <button class="wm-btn wm-cancel">Stop</button>
-  </div>
-</template>
-
-<template id="dlg4" class="tpl-dlg" data-title="Configuration">
-  <fieldset>
-    <legend>Appearance</legend>
-    <label class="wm-ml">Theme<select id="prefs-theme"><option value="98">Windows 98</option><option value="7" selected>Windows 7</option><option value="10">Windows 10</option></select>
-    </label>
-  </fieldset>
+<template id="chkrad" class="tpl-dlg" data-title="Configuration">
   <fieldset>
     <legend>Notifications</legend>
     <div class="wm-flex">
       <label class="wm-nosel" style="width:5em"><input type="radio" name="rad1" checked>On</label>
       <label class="wm-nosel" style="width:5em"><input type="radio" name="rad1">Off</label>
-      <label class="wm-nosel"><input type="radio" name="rad1">Whatever</label>
+      <label class="wm-nosel"><input type="radio" name="rad1" id="whatever">Whatever</label>
     </div>
   </fieldset>
+  <label class="wm-nosel wm-blk"><input type="checkbox">Remind me later</label>
+  <label class="wm-nosel wm-blk"><input type="checkbox" id="stfu">Don't ask me again</label>
   <div class="wm-footer">
     <button class="wm-btn wm-ok">Done</button>
+  </div>
+</template>
+
+<template id="prog" class="tpl-dlg" data-title="Print">
+  <div class="wm-lbl">Preparing the document&hellip;</div>
+  <progress value="20" max="100"></progress>
+  <div class="wm-footer">
+    <button class="wm-btn wm-cancel">Stop</button>
   </div>
 </template>
 
