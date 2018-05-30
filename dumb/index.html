@@ -42,7 +42,7 @@
 <input id="ret" placeholder="return" readonly>
 <input id="error" placeholder="error" readonly>
 </div>
-<button id="run">Run!</button>
+<button id="run" disabled>Run!</button>
 </form>
 <script>
 window.addEventListener('load', () => {
@@ -66,8 +66,9 @@ window.addEventListener('load', () => {
     }
     e.preventDefault();
   });
+  $('#run').disabled = false;
 });
 </script>
-<script src="dumb.js" async></script>
+<script src="https://rawgit.com/putara/dumb/master/dumb.js" async></script>
 </body>
 </html>
