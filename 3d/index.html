@@ -8,13 +8,13 @@
 		body { background: #000; border: 0; margin: 0; padding: 0; overflow: hidden }
 		#telop { display: flex; justify-content: center; position: fixed; left: 0; bottom: 0; width: 100%; z-index: 99999; background: rgba(0,0,0,.7); color: #fff; font-size: smaller; text-align: center }
 		#telop * { font-size: inherit; color: inherit; margin: 0; padding: 0 }
-		#telop button { color: #000; background: #9cf; border: 1px solid; border-color: #cff #06c #06c #cff; cursor: pointer; width: 2em; font-size: .8em }
 		#telop h1 { font: bold larger monospace }
 		#telop a { display: block; padding: .2em; }
 		a { text-decoration: none }
 		a:hover, a:active, a:focus { text-decoration: underline; text-decoration-style: dotted }
-		#lq { border-radius: .5em 0 0 .5em; margin-left: .5em }
-		#hq { border-radius: 0 .5em .5em 0 }
+		#qual { display: flex; flex-direction: column; position: fixed; right: 0; bottom: 2em }
+		#qual button { color: #fff; background: #000; border: 0; border-radius: 100%; outline: 0; cursor: pointer; width: 3em; height: 3em; margin: .5rem 1rem; font: larger monospace; text-shadow: 1px 1px #000; transition: background-color .4s; visibility: hidden }
+		#qual button:hover, #qual button:focus { background: #7c9 }
 	</style>
 </head>
 <body>
@@ -28,8 +28,10 @@
 <a target="_blank" href="https://www.meetup.com/freeCodeCamp-Wellington/">Meetup</a>
 <a target="_blank" href="https://github.com/freecodecamp-wellington/">GitHub</a>
 <a target="_blank" href="https://gitter.im/freecodecamp-wellington/">Gitter</a>
-<button id="lq">LQ</button>
-<button id="hq">HQ</button>
+</nav>
+<nav id="qual">
+	<button id="lq" title="Low Quality">LQ</button>
+	<button id="hq" title="High Quality">HQ</button>
 </nav>
 
 <script>
@@ -37,11 +39,9 @@
 	'use strict';
 
 	var container, controls, stats;
-	var mesh, zpos = -7;
+	var floor, target, mesh, zpos = -16;
 	var camera, scene, clock, renderer;
-	var lights = [], frame;
-
-	init();
+	var lights = [], helpers = [], frame;
 
 	function Progress(){
 		var outer = document.createElement('div');
@@ -76,9 +76,9 @@
 
 	function finish(){
 		cancelAnimationFrame(frame);
-		controls.enabled = false;
 		stats.showPanel(false);
 		clock.stop();
+		controls.dispose();
 		window.removeEventListener('resize', resize, false);
 		container.removeChild(renderer.domElement);
 		renderer.dispose();
@@ -104,25 +104,43 @@
 
 		scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x011222);
-		scene.fog = new THREE.Fog(0x011222, 6, 15);
+		scene.fog = new THREE.Fog(0x011222, 10, 20);
 
 		scene.add(new THREE.HemisphereLight(0x443333, 0x111122, 1));
 
+		floor = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({ color: 0x999988 }));
+		floor.receiveShadow = true;
+		floor.rotation.set(-Math.PI / 2, 0, 0);
+		floor.position.set(0, -3, 0);
+		scene.add(floor);
+
+		target = new THREE.Object3D();
+		scene.add(target);
+
 		(function(){
-			var colours = [ 0xff00ff, 0x00ff00, 0x0000ff ];
-			var intensities = [ 8, 4, 64 ];
-			var distance = 5;
-			var deg2rad = function(x){ return x / 180 * Math.PI };
-			for (var i = 0; i < 3; i++) {
-				var ang = 90 + (i - 1) * 45;
-				lights[i] = new THREE.SpotLight(colours[i], intensities[i], 100, Math.PI / 2, 0, 2);
-				lights[i].position.set(-Math.cos(deg2rad(ang)) * distance, Math.sin(deg2rad(ang)) * distance, -i + 1);
-				scene.add(lights[i]);
+			function addSpotlight(colour, intensity, x, y, z){
+				var light = new THREE.SpotLight(colour, intensity);
+				light.angle = .3;
+				light.penumbra = .5;
+				light.decay = 2;
+				light.distance = 100;
+				light.castShadow = true;
+				light.shadow.mapSize.width = 1024;
+				light.shadow.mapSize.height = 1024;
+				light.position.set(x, y, z);
+				scene.add(light);
+				lights.push(light);
+				//helpers.push(new THREE.SpotLightHelper(light));
+				//scene.add(helpers[helpers.length - 1]);
 			}
+			var r = 4, h = 5;
+			addSpotlight(0xff00ff, 0, -r, h, Math.sqrt(r));
+			addSpotlight(0xffff00, 0,  0, h, -Math.sqrt(r) * 2);
+			addSpotlight(0x00ffff, 0,  r, h, Math.sqrt(r));
 		})();
 
-		var light = new THREE.DirectionalLight(0xffffff, 1);
-		light.position.set(0, -10, 0);
+		var light = new THREE.DirectionalLight(0xffffff, .1);
+		light.position.set(0, 10, 0);
 		scene.add(light);
 
 		var uri = hq ? 'fcc-hq.stl' : 'fcc-lq.stl';
@@ -137,6 +155,7 @@
 					mesh.receiveShadow = true;
 					mesh.position.z = zpos;
 					scene.add(mesh);
+					lights.forEach(function(l){ l.target = mesh });
 					// let's start!
 					prog.dismiss();
 					stats.showPanel(0);
@@ -150,25 +169,27 @@
 			});
 	}
 
-	function resize() {
+	function resize(){
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	function render() {
+	function render(){
 		if (renderer) {
 			if (clock.running) {
 				var d = clock.getElapsedTime() / 2.5;
-				//var x = 6 * Math.pow(d, 5) - 15 * Math.pow(d, 4) + 10 * Math.pow(d, 3);
-				var x = 15 * Math.pow(d, 5) - 33 * Math.pow(d, 4) + 19 * Math.pow(d, 3);
-				var z = (1 - x) * zpos;
-				mesh.position.z = z;
+				//var v = 6 * Math.pow(d, 5) - 15 * Math.pow(d, 4) + 10 * Math.pow(d, 3);
+				var v = 15 * Math.pow(d, 5) - 33 * Math.pow(d, 4) + 19 * Math.pow(d, 3);
+				var w = Math.pow(d, 3);
+				mesh.position.z = (1 - v) * zpos;
+				lights.forEach(function(l){ l.intensity = w * 2 });
 				if (d > 1) {
 					controls.enabled = true;
 					clock.stop();
 				}
 			}
+			//helpers.forEach(function(h){ h.update() });
 			stats.update();
 			controls.update();
 			renderer.render(scene, camera);
@@ -177,7 +198,12 @@
 	}
 
 	window.addEventListener('load', function(){
-		Array.prototype.forEach.call(document.querySelectorAll('#telop button'), function(e){
+		if (navigator.userAgent.toLowerCase().indexOf('mobile') !== -1 && !confirm('This might drive your phone crazy or kill its battery life. Are you OK with that?')) {
+			return;
+		}
+		init();
+		Array.prototype.forEach.call(document.querySelectorAll('#qual button'), function(e){
+			e.style.visibility = 'visible';
 			e.addEventListener('click', function(e){
 				e.preventDefault();
 				finish();
