@@ -4,25 +4,48 @@
 <meta charset="UTF-8">
 <title>DumbScript Interpreter</title>
 <style>
-#code {
+h1 {
+  padding: 0;
+  margin: 0;
+  font-size: larger;
+}
+textarea {
+  resize: none;
+}
+input, textarea {
   box-sizing: border-box;
+  font-family: monospace;
+}
+#code {
   width: 100%;
+}
+button {
+  width: 6em;
+  height: 3em;
 }
 .group {
   display: flex;
+  flex-direction: column;
+  margin: .5em;
 }
-#func, #param {
+label {
+  overflow: hidden;
+  display: flex;
+}
+label .text {
+  width: 6em;
+}
+.group input, .group textarea {
   flex: 1;
+  margin: 1px 0;
 }
-#ret {
-  flex: 4;
-}
-#error {
-  flex: 3;
+.note {
+  font-size: small;
 }
 </style>
 </head>
 <body>
+<h1>Hack!</h1>
 <form id="test">
 <textarea id="code" rows="15">var main = function(arg){
  var kia = {
@@ -30,32 +53,40 @@
    var array = name.split("");
    var formatted = array.join("-");
    var one3 = name.length * 3;
-   return "Kia ora, is your name " + formatted + "? It's " + name.length + " letters long, one third of " + one3 + ".";
+   return "Kia ora, is your name " + formatted
+     + "? It's " + name.length + " letters long"
+     + ", one third of " + one3 + ".";
   }
  };
  return kia.ora(arg);
 }
 </textarea>
 <div class="group">
-<input id="func" placeholder="function" value="main">
-<input id="param" placeholder="parameter" value="nobody">
-<input id="ret" placeholder="return" readonly>
-<input id="error" placeholder="error" readonly>
+<label><span class="text">Function: </span><input id="func" placeholder="function" value="main"></label>
+<label><span class="text">Argument: </span><input id="param" placeholder="parameter" value="nobody"></label>
+<label><span class="text">Return: </span><textarea id="ret" placeholder="return" readonly></textarea></label>
+<label><span class="text">Error: </span><input id="error" placeholder="error" readonly></label>
 </div>
 <button id="run" disabled>Run!</button>
+<button id="clear" type="button" disabled>Clear</button>
+<div class="note">
+  For some reason, this interpreter is not resilient. Syntax errors tend to be ignored.
+  <a target="_blank" href="https://github.com/putara/dumb/blob/master/README.md">Language specs here.</a>
+</div>
 </form>
 <script>
-window.addEventListener('load', () => {
-  let $ = (q) => document.querySelector(q);
-  let js = new JSVM();
-  $('#test').addEventListener('submit', (e) => {
+window.addEventListener('load', function(){
+  'use strict';
+  var $ = (q) => document.querySelector(q);
+  var js = new JSVM();
+  $('#test').addEventListener('submit', function(e){
     try {
-      let code = $('#code').value;
-      let func = $('#func').value;
-      let arg = $('#param').value;
+      var code = $('#code').value;
+      var func = $('#func').value;
+      var arg = $('#param').value;
       js.clear();
       js.append(code);
-      let ret = js.eval(func, arg);
+      var ret = js.eval(func, arg);
       $('#ret').value = ret;
       $('#error').value = null;
     } catch (e) {
@@ -66,7 +97,12 @@ window.addEventListener('load', () => {
     }
     e.preventDefault();
   });
+  $('#clear').addEventListener('click', function(){
+    $('#ret').value = $('#error').value = null;
+  });
+  $('#clear').click();
   $('#run').disabled = false;
+  $('#clear').disabled = false;
 });
 </script>
 <script src="https://rawgit.com/putara/dumb/master/dumb.js" async></script>
