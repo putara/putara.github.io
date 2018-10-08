@@ -207,7 +207,7 @@
         }, 500);
       },
       tabs: function(dlg){
-        dlg.move('5em', '20em').resize('25em');
+        dlg.move('5em', '20em').resize('30em');
       },
     };
   }).call(App.prototype);
