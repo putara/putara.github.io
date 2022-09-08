@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Preview</title>
+<style>
+body { background: black; color: white; }
+video { position: absolute; left: 0; top: 0; width: 100vw; height: 100vh; }
+nav { display: flex; align-items: center; }
+button { margin: .25rem; cursor: pointer; }
+</style>
+</head>
+<body>
+<nav id="camList"></nav><video id="preview" autoplay playsinline></video>
+<script>
+// Based on https://webrtc.org/getting-started/media-devices
+window.addEventListener('load', async function() {
+  const camList = document.querySelector('#camList');
+  const preview = document.querySelector('#preview');
+
+  async function getConnectedDevices(type) {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter(device => device.kind === type)
+  }
+
+  function updateCameraList(cameras) {
+    camList.innerHTML = 'Select a device:';
+    cameras.forEach(function(camera) {
+      const button = camList.appendChild(document.createElement('button'));
+      button.textContent = camera.label;
+      button.setAttribute('data-id', camera.deviceId);
+    });
+  }
+
+  async function openCamera(cameraId) {
+    const constraints = {
+      audio: true,
+      video: {
+        deviceId: cameraId,
+        width: {min: 720, ideal: 1280, max: 1920},
+        height: {min: 480, ideal: 720, max: 1080}
+      }
+    };
+    return await navigator.mediaDevices.getUserMedia(constraints);
+  }
+
+  async function stopPreview() {
+    preview.srcObject = null;
+    preview.style.display = 'none';
+    camList.style.display = '';
+  }
+
+  async function startPreview(deviceId) {
+    if (deviceId) {
+      camList.style.display = 'none';
+      preview.style.display = '';
+      try {
+        const stream = await openCamera(deviceId);
+        preview.srcObject = stream;
+      } catch(e) {
+        stopPreview();
+        console.error(e);
+      }
+    }
+  }
+
+  stopPreview();
+  await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+
+  const cameras = await getConnectedDevices('videoinput');
+  console.log(cameras);
+  updateCameraList(cameras);
+
+  navigator.mediaDevices.addEventListener('devicechange', async function() {
+    const newCameras = await getConnectedDevices('video');
+    updateCameraList(newCameras);
+  });
+
+  document.addEventListener('click', async function(event) {
+    const button = event.target.closest('button[data-id]');
+    if (button) {
+      await stopPreview();
+      await startPreview(button.getAttribute('data-id'));
+    }
+  });
+});
+</script>
+</body>
+</html>
